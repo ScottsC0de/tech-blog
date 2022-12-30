@@ -50,9 +50,6 @@ router.get('/post/:id', async (req, res) => {
     };
 });
 
-// WHEN I enter a comment and click on the submit button while signed in
-// THEN the comment is saved and the post is updated to display the comment, the comment creator’s username, and the date created 
-
 // render sign in page. if successful, go to home page
 router.get('/signin', async (req, res) => {
     try {
