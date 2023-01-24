@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const sequelize = require('../config/connection');
 const { Blogpost, Comment, User } = require('../models');
+const withAuth = require('../utils/auth');
 
 // presented with existed blog posts that include the post title and date created
-router.get('/', async (req, res) => {
+router.get('/', withAuth, async (req, res) => {
     Blogpost.findAll({
         attributes: ['id', 'title', 'date', 'content'],
         include: [{
@@ -27,7 +28,7 @@ router.get('/', async (req, res) => {
 
 // existing post
 // presented with the post title, contents, post creator’s username, and date created for that post and have the option to leave a comment
-router.get('/post/:id', async (req, res) => {
+router.get('/post/:id', withAuth, async (req, res) => {
     Blogpost.findOne({
         where: { id: req.params.id },
         attributes: ['id', 'title', 'date', 'content'],
