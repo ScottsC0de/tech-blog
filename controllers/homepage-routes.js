@@ -62,14 +62,28 @@ router.get('/signin', async (req, res) => {
 });
 
 // render sign up page. if successful, go to home page
-router.get('/signup', async (req, res) => {
+router.post('/signup', async (req, res) => {
+
+    User.create({
+        username: req.body.username,
+        password: req.body.password
+    })
     try {
-        await req.session.loggedIn
-        res.redirect('/');
-        return;
+        const newUser = await req.session.save(() => {
+            req.session.user_id = newUser.id;
+            req.session.username = newUser.username;
+            req.session.loggedIn = true;
+
+            res.redirect('/');
+            return;
+        });
     }
-    catch
-    { res.render('signup'); }
+    catch (err) {
+        res.status(400).json(err)
+    };
 });
+
+// get route for signup page
+// { res.render('signup'); }
 
 module.exports = router;
